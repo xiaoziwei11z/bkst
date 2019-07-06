@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.bkst.mapper.SearchBookMapper">
+	<select id="selectBooks" resultType="com.bkst.pojo.SearchBook">
+		SELECT b.bid,b.bname,b.author,b.price,c.cname categoryName,b.picture,b.text
+		FROM tb_book b,tb_category c
+		WHERE b.cid=c.cid
+	</select>
+	
+	<select id="selectBookByBid" resultType="com.bkst.pojo.SearchBook">
+		SELECT b.bid,b.bname,b.author,b.price,c.cname categoryName,b.picture,b.text
+		FROM tb_book b,tb_category c
+		WHERE b.cid=c.cid AND b.bid=#{bid}
+	</select>
+</mapper>

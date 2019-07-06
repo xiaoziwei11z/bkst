@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="tcp://192.168.25.128:61616"/>
+	</bean>
+	<bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+		<property name="targetConnectionFactory" ref="targetConnectionFactory"/>
+	</bean>
+	
+	<!-- 主题目的地 -->
+	<bean id="addBookDestination" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="book-add-topic"/>
+	</bean>
+	<bean id="editBookDestination" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="book-edit-topic"/>
+	</bean>
+	<bean id="deleteBookDestination" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="book-delete-topic"/>
+	</bean>
+	
+	<!-- 接收消息 -->
+	<!-- 监听器 -->
+	<bean name="addBookListener" class="com.bkst.message.AddBookListener"/>
+	<!-- 消息监听容器 -->
+	<bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="destination" ref="addBookDestination"/>
+		<property name="messageListener" ref="addBookListener"/>
+	</bean>
+	<!-- 监听器 -->
+	<bean name="editBookListener" class="com.bkst.message.EditBookListener"/>
+	<!-- 消息监听容器 -->
+	<bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="destination" ref="editBookDestination"/>
+		<property name="messageListener" ref="editBookListener"/>
+	</bean>
+	<!-- 监听器 -->
+	<bean name="deleteBookListener" class="com.bkst.message.DeleteBookListener"/>
+	<!-- 消息监听容器 -->
+	<bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="destination" ref="deleteBookDestination"/>
+		<property name="messageListener" ref="deleteBookListener"/>
+	</bean>
+</beans>

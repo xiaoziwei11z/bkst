@@ -16,7 +16,7 @@
 	<pagehelper.version>3.4.2-fix</pagehelper.version>
 	<mysql.version>8.0.12</mysql.version>
 	<druid.version>1.0.9</druid.version>
-	<dubbo.version>2.5.3</dubbo.version>
+	<dubbo.version>2.6.9</dubbo.version>
 	<zookeeper.version>3.4.7</zookeeper.version>
 	<zkclient.version>0.1</zkclient.version>
 	<fastdfs.version>1.25</fastdfs.version>
